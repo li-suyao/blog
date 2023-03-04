@@ -1,0 +1,96 @@
+Last login: Thu Oct 20 03:25:32 2022
+[jian@HJ-hadoop ~]$ jps
+
+[jian@HJ-hadoop ~]$ mkdir my_wordcount
+[jian@HJ-hadoop ~]$ cd my_wordcount/
+[jian@HJ-hadoop my_wordcount]$ mkdir input_data
+[jian@HJ-hadoop my_wordcount]$ cd input_data/
+[jian@HJ-hadoop input_data]$ pwd
+/home/jian/my_wordcount/input_data
+[jian@HJ-hadoop input_data]$ vim input.txt
+[jian@HJ-hadoop input_data]$ ls
+input.txt （dog cat fish hen cock cock cow horse duck pig dog fish cow sheep goat hen）
+[jian@HJ-hadoop input_data]$ ls ~/WordCountTutorial/
+firstTutorial.jar  input_data  tutorial_classes  WordCount.java
+[jian@HJ-hadoop input_data]$ cd ..
+[jian@HJ-hadoop my_wordcount]$ pwd
+/home/jian/my_wordcount
+[jian@HJ-hadoop my_wordcount]$ cp ~/WordCountTutorial/WordCount.java .
+
+[jian@HJ-hadoop my_wordcount]$ ll
+total 4
+drwxrwxr-x 2 jian jian   23 Oct 20 03:32 input_data
+-rw-r--r-- 1 jian jian 2148 Oct 20 03:34 WordCount.java
+[jian@HJ-hadoop my_wordcount]$ javac -version
+javac 1.8.0_345
+
+[jian@HJ-hadoop my_wordcount]$ export HADOOP_CLASSPATH=$(hadoop classpath)
+[jian@HJ-hadoop my_wordcount]$ echo $HADOOP_CLASSPATH
+[jian@HJ-hadoop my_wordcount]$ ll
+total 4
+drwxrwxr-x 2 jian jian   23 Oct 20 03:32 input_data
+-rw-r--r-- 1 jian jian 2148 Oct 20 03:34 WordCount.java
+[jian@HJ-hadoop my_wordcount]$ mkdir wordcount_classes
+[jian@HJ-hadoop my_wordcount]$ ll
+total 4
+drwxrwxr-x 2 jian jian   23 Oct 20 03:32 input_data
+drwxrwxr-x 2 jian jian    6 Oct 20 03:41 wordcount_classes
+-rw-r--r-- 1 jian jian 2148 Oct 20 03:34 WordCount.java
+[jian@HJ-hadoop my_wordcount]$ cd wordcount_classes/
+[jian@HJ-hadoop wordcount_classes]$ ll
+total 0
+[jian@HJ-hadoop wordcount_classes]$ cd ..
+[jian@HJ-hadoop my_wordcount]$ javac -classpath ${HADOOP_CLASSPATH} -d wordcount_classes WordCount.java
+[jian@HJ-hadoop my_wordcount]$ cd wordcount_classes/
+[jian@HJ-hadoop wordcount_classes]$ ll
+total 12
+-rw-rw-r-- 1 jian jian 1491 Oct 20 03:42 WordCount.class
+-rw-rw-r-- 1 jian jian 1739 Oct 20 03:42 WordCount$IntSumReducer.class
+-rw-rw-r-- 1 jian jian 1736 Oct 20 03:42 WordCount$TokenizerMapper.class
+[jian@HJ-hadoop wordcount_classes]$ cd ..
+
+[jian@HJ-hadoop my_wordcount]$ jar -cvf mywordcount.jar -C wordcount_classes/ .
+added manifest
+adding: WordCount$TokenizerMapper.class(in = 1736) (out= 754)(deflated 56%)
+adding: WordCount$IntSumReducer.class(in = 1739) (out= 739)(deflated 57%)
+adding: WordCount.class(in = 1491) (out= 814)(deflated 45%)
+[jian@HJ-hadoop my_wordcount]$ ll
+total 8
+drwxrwxr-x 2 jian jian   23 Oct 20 03:32 input_data
+-rw-rw-r-- 1 jian jian 3071 Oct 20 03:44 mywordcount.jar
+drwxrwxr-x 2 jian jian  105 Oct 20 03:42 wordcount_classes
+-rw-r--r-- 1 jian jian 2148 Oct 20 03:34 WordCount.java
+[jian@HJ-hadoop my_wordcount]$ hdfs dfs -mkdir /my_wordcount
+2022-10-20 03:44:48,812 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[jian@HJ-hadoop my_wordcount]$ hdfs dfs -mkdir /my_wordcount/input
+2022-10-20 03:45:03,407 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[jian@HJ-hadoop my_wordcount]$ cd input_data/
+[jian@HJ-hadoop input_data]$ ll
+total 4
+-rw-rw-r-- 1 jian jian 74 Oct 20 03:32 input.txt
+[jian@HJ-hadoop input_data]$ hdfs dfs -put input.txt /my_wordcount/input
+2022-10-20 03:46:16,019 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[jian@HJ-hadoop input_data]$ cd ..
+[jian@HJ-hadoop my_wordcount]$ ll
+total 8
+drwxrwxr-x 2 jian jian   23 Oct 20 03:32 input_data
+-rw-rw-r-- 1 jian jian 3071 Oct 20 03:44 mywordcount.jar
+drwxrwxr-x 2 jian jian  105 Oct 20 03:42 wordcount_classes
+-rw-r--r-- 1 jian jian 2148 Oct 20 03:34 WordCount.java
+[jian@HJ-hadoop my_wordcount]$ hadoop jar mywordcount.jar WordCount /my_wordcount/input /my_word、count/output
+
+
+[jian@HJ-hadoop my_wordcount]$ hdfs dfs -cat /my_wordcount/output/*
+2022-10-20 03:49:26,710 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+cat     1
+cock    2
+cow     2
+dog     2
+duck    1
+fish    2
+goat    1
+hen     2
+horse   1
+pig     1
+sheep   1
+[jian@HJ-hadoop my_wordcount]$

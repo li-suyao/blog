@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bigdata on Hello Friend</title>
+    
+    
+    
+    <link>/bigdata/</link>
+    <description>Recent content in Bigdata on Hello Friend</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Oct 2022 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/bigdata/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bigdata</title>
+      <link>/bigdata/bigdata/</link>
+      <pubDate>Sun, 23 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/bigdata/bigdata/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          #Here are some things about my professional studies.
+Hadoop
+Nosql
+Python
+database
+data structure
+matlab
+C
+Principles of computer composition
+network
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>hdfs9870error</title>
+      <link>/bigdata/hdfs9870%E6%8A%A5%E9%94%992022-10-24/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/bigdata/hdfs9870%E6%8A%A5%E9%94%992022-10-24/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          #HADOOP启动hdfs网页（端口号9870）时出现Operation category READ is not supported in state standby. Visit https://s.apache.org/sbnn-error的解决方法。
+hdfs haadmin -getServiceState nn1
+standby
+hdfs haadmin -getServiceState nn2
+standby
+hdfs haadmin -transitionToStandby &amp;ndash;forcemanual nn2
+hdfs haadmin -transitionToActive &amp;ndash;forcemanual nn1
+hdfs haadmin -getServiceState nn1
+active
+hdfs haadmin -getServiceState nn2
+standby
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>
